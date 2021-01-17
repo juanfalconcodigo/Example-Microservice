@@ -1,0 +1,34 @@
+version: "3"
+
+services: 
+  msexpress:
+    build: 
+      context: .
+      dockerfile: msexpress/Dockerfile
+    image: msexpressimage
+    environment: 
+      - PORT=9000
+    ports: 
+      - 9000:9000
+    networks: 
+      - my-network
+
+  mskoa:
+    build: 
+      context: .
+      dockerfile: mskoa/Dockerfile
+    image: mskoaimage
+    ports: 
+      - 9010:9010
+    environment: 
+      - PORT=9010
+      - URL_BACKEND_EXPRESS=http://msexpress:9000/v1/api/welcome
+    depends_on: 
+      - msexpress
+    networks:
+      - my-network
+
+
+networks:
+  my-network:
+    
